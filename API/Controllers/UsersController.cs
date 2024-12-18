@@ -1,16 +1,19 @@
 using System;
 using API.Data;
 using API.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
 
-
-[ApiController]
-[Route("api/[controller]")]
-public class UsersController(DataContext dataContext) : ControllerBase
+//below two are specified in BaseAPIContoller class, and this is inheriting BaseAPIContoller.
+//[ApiController]
+//[Route("api/[controller]")]
+[Authorize]
+public class UsersController(DataContext dataContext) : BaseAPIController
 {
+    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers() {
         var users = await dataContext.Users.ToListAsync();
